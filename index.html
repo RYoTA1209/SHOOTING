@@ -6,10 +6,58 @@
     <title>Unity WebGL Player | 2d-shooting-mobile</title>
     <script src="Build/UnityLoader.js"></script>
     <script>
+      UnityLoader.SystemInfo.mobile = false; // mobileで表示時のメッセージを表示させない。
       var gameInstance = UnityLoader.instantiate("gameContainer", "Build/build.json");
     </script>
+    <!-- PWAにするための設定ファイル -->
+    <link rel="manifest" href="manifest.json">
+
+    <!-- iPhoneでホーム画面に追加するときのアイコン等の設定 -->
+    <link rel="apple-touch-icon" href="icons/icon64.png" />
+    <link rel="apple-touch-icon" href="icons/icon128.png" />
+    <link rel="apple-touch-icon" href="icons/icon256.png" />
+    <link rel="apple-touch-icon" href="icons/icon512.png" />
+    <link
+      rel="apple-touch-startup-image"
+      href="/icons/icon128.png"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="/icons/icon256.png"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      href="/icons/icon512.png"
+      media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <style>
+      body,
+      html {
+        margin: 0 auto;
+        height: 100%;
+      }
+    </style>
   </head>
   <body>
-    <div id="gameContainer" style="width: 1242px; height: 2208px; margin: auto"></div>
+    <div id="gameContainer" style="width: 100%; height: 100%; margin: auto"></div>
+    <!-- ServiceWorkerの登録 -->
+    <script>
+      window.addEventListener("load", function () {
+        if ("serviceWorker" in navigator) {
+          navigator.serviceWorker
+            .register("/sw.js")
+            .then(function (registration) {
+              console.log("serviceWorker registed.");
+            })
+            .catch(function (error) {
+              console.warn("serviceWorker error.", error);
+            });
+        }
+      });
+    </script>
   </body>
 </html>
